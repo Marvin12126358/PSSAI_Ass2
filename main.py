@@ -1,16 +1,30 @@
-# This is a sample Python script.
+import sys
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+import json_converter
 
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+# Kompakte interne Repräsentation einer Lösung
 
 
-# Press the green button in the gutter to run the script.
+data = {}
+
+def total_cost(solution, jobs) -> int:
+    tardiness = sum(max(0, s["end"] - jobs[jid]["DueTime"])
+                    for jid, s in solution.items())
+    makespan  = max(s["end"] for s in solution.values())
+    return tardiness + makespan
+
+
+
+def basic_sort(data):
+    jobs_sorted = sorted(data["Jobs"], key=lambda job: job["DueTime"])
+    print("Jobs sorted in dueTime")
+    for i in range(len(jobs_sorted)):
+        print(jobs_sorted[i]["Id"])
+
+    # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
+    #print_hi('PyCharm')
+    data = json_converter.load_instance(sys.argv[1])
+    basic_sort(data)
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
